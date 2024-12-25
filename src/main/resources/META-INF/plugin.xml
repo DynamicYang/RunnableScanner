@@ -1,0 +1,56 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>org.dyang.RunnableScanner</id>
+    
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>RunnableScanner</name>
+    
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="support@theFuck.com" url="https://www.theFuck.com">thFuck</vendor>
+    
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>A simple plugin which scan all the runnable configuration in the project.</description>
+    
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    
+    
+    <depends>com.intellij.java</depends>
+    
+    
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+    
+    </extensions>
+    
+<!--    <actions>-->
+<!--        &lt;!&ndash; 创建主菜单的ActionGroup &ndash;&gt;-->
+<!--        <group id="ToolsMenu" class="com.intellij.openapi.actionSystem.DefaultActionGroup">-->
+<!--            <action id="org.dyang.runnablescanner.scanner.DynamicConfigScannerMenuAction"-->
+<!--                class="org.dyang.runnablescanner.scanner.DynamicConfigScannerMenuAction"-->
+<!--                text="ConfigScanner"-->
+<!--                description="Scan and configure runnable classes"/>-->
+<!--                -->
+<!--        </group>-->
+<!--        -->
+<!--        &lt;!&ndash; 这里会根据需要动态添加更多的菜单项 &ndash;&gt;-->
+<!--    </actions>-->
+    
+    <actions>
+        <action
+            id="org.dyang.runnablescanner.scanner.ScannerInvokeAction"
+            class="org.dyang.runnablescanner.scanner.ScannerInvokeAction"
+            text="RunnableScanner"
+            description="This is a tool action"
+            icon="AllIcons.Actions.Execute"
+          >
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
