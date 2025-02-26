@@ -12,7 +12,6 @@ import org.dyang.runnablescanner.ConfigScanner;
 import org.dyang.runnablescanner.RunConfigurationUpdater;
 import org.dyang.runnablescanner.scannerImpl.SpringBootMainClassScanner;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 /**
@@ -23,32 +22,30 @@ import java.util.List;
  **/
 public class ScannerInvokeAction extends AnAction {
     private static final Logger LOG = Logger.getInstance(ScannerInvokeAction.class);
+
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         System.out.println("My Tool Action triggered!");
         Project project = anActionEvent.getProject();
         if (project == null) return;
-        
-        
-        
-        ConfigScanner scanner = new SpringBootMainClassScanner();
 
-        new Task.Backgroundable(project, "Updating Run Configurations") {
-            @Override
-            public void run(ProgressIndicator indicator) {
-
-                List<String> mainClasses = scanner.scan(project,indicator);
-
-                // 更新运行配置
-                ApplicationManager.getApplication().invokeLater(() -> {
-                    RunConfigurationUpdater.updateRunConfigurations(project, mainClasses);
-                    Messages.showInfoMessage(project, "Run Configurations Updated Successfully!", "Success");
-                });
-            }
-        }.queue();
+        if (ApplicationManager.getApplication().isReadAccessAllowed()) {
+            ConfigScanner scanner = new SpringBootMainClassScanner();
+            new Task.Backgroundable(project, "Updating run configurations") {
+                @Override
+                public void run(ProgressIndicator indicator) {
+                    List<String> mainClasses = scanner.scan(project, indicator);
+                    // 更新运行配置
+                    ApplicationManager.getApplication().invokeLater(() -> {
+                        RunConfigurationUpdater.updateRunConfigurations(project, mainClasses);
+                        Messages.showInfoMessage(project, "Run Configurations Updated Successfully!", "Success");
+                    });
+                }
+            }.queue();
+        } else {
+            Messages.showMessageDialog(project, "IDEA is currently indexing. Please try again later.", "Indexing in Progress", Messages.getInformationIcon());
+        }
 
         System.out.println("done!");
     }
-
-
 }
